@@ -6,7 +6,7 @@
       console.log(token)
       $.post('/charge', {'token':token, 'type':window.type})
       .done(function(){
-        window.location = 'http://localhost:3000/thanks'
+        window.location = 'https://chiconsignup.herokuapp.com/thanks'
         console.log("charge success")
       })
       .fail(function(){
