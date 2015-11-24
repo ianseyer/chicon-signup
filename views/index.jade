@@ -1,0 +1,76 @@
+extends layout
+
+block content
+  .container-fluid
+    .row
+      .col-lg-12
+        h1.title.text-center Welcome to Chicon Collective
+        h2.text-center.
+          301 Chicon, Austin, TX, 78702
+        h3.text-center.
+          Coworking + Community
+    .row
+      .card-deck
+          .card.card-primary
+            .card-header.text-center
+              i(class="fa fa-5x fa-level-down").
+            .card-block
+              h4.card-title.text-center= "Drop-In"
+              p.card-text.text-center.
+                Use of office hours for a single day
+              a(href="#" class="btn btn-secondary stripe" data-amount="10" type="drop").center-block
+                $10
+          .card.card-success
+            .card-header.text-center
+              i(class="fa fa-5x fa-group").
+            .card-block
+              h4.card-title.text-center= "Social"
+              p.card-text.text-center.
+                40 hours general coworking per month during office hours
+              a(href="#" class="btn btn-secondary stripe" data-amount="50" type="news").center-block
+                $50
+          .card.card-info
+            .card-header.text-center
+              i(class="fa fa-5x fa-star-half-empty").
+            .card-block
+              h4.card-title.text-center= "Part-Time"
+              p.card-text
+                p.
+                  Use of mailing address
+                p.
+                  Unlimited coworking during office hours of 9-6
+              a(href="#" class="btn btn-secondary stripe" data-amount="150" type="newpt").center-block
+                $150
+          .card.card-warning
+            .card-header.text-center
+              i(class="fa fa-5x fa-star")
+            .card-block
+              h4.card-title.text-center= "Full-Time"
+              p.card-text
+                p.
+                  24/7 access to Chicon Collective via a private keycode
+                p.
+                  Mailing Address
+                p.
+                  Free event space
+              a(href="#" class="btn btn-secondary stripe" data-amount="200" type="newft").center-block
+                $200
+          .card.card-danger
+            .card-header.text-center
+              i(class="fa fa-5x fa-power-off")
+            .card-block
+              h4.card-title.text-center= "Dedicated Desk"
+              p.card-text
+                p.
+                  24/7 Access via a private keycode
+                p.
+                  Access to a dedicated desk for your exclusive use
+                p.
+                  The right to store items in the space
+                p.
+                  Mailing Address
+                p.
+                  Free event space
+              a(href="#" class="btn btn-secondary stripe" data-amount="400" type="dd").center-block
+                $400
+    include checkout.html
