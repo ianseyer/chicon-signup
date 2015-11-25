@@ -10,6 +10,12 @@ a {
   color: #00B7FF;
 }
 
+.terms {
+  height: 300px;
+  overflow: scroll;
+  padding: 10px;
+  border: solid 1px black;
+}
 h1.title {
   width: 100%;
   font-size: 5em;
