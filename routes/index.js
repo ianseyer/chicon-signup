@@ -35,6 +35,7 @@ router.post('/charge', function(req, res){
     'to': [{'email':req.body.email, 'type':'to'}]
   }
 
+  //it was a drop in
   if(req.body.type == "drop"){
     stripe.customers.create({
       description: "Chicon Collective Drop In",
@@ -60,6 +61,7 @@ router.post('/charge', function(req, res){
       console.log(err)
     })
   }
+  //It was a subscription
   else {
     stripe.customers.create({
       description: "Chicon Collective",
