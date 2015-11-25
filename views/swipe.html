@@ -1,0 +1,32 @@
+<script type="text/javascript">
+		// Called on a successful scan, where one of the parsers recognizes the card data.
+		var success = function (data) {
+			$("#status").text("Success!");
+			$(".properties").empty();
+			// Iterate properties of parsed data
+			for (var key in data) {
+				if (data.hasOwnProperty(key)) {
+					var text = key + ': ' + data[key];
+					$(".properties").append('<li class="data">' + text + '</li>');
+				}
+			}
+		}
+		var error = function () {
+			$("#status").text("Failed!");
+			$(".line").text("");
+		}
+		// Initialize the plugin with default parser and callbacks.
+		//
+		// Set debug to true to watch the characters get captured and the state machine transitions
+		// in the javascript console. This requires a browser that supports the console.log function.
+		//
+		// Set firstLineOnly to true to invoke the parser after scanning the first line. This will speed up the
+		// time from the start of the scan to invoking your success callback.
+		$.cardswipe({
+			firstLineOnly: false,
+			complete: success,
+			parsers: [ "visa", "mastercard", "amex", "generic" ],
+			error: error,
+			debug: true
+		});
+</script>

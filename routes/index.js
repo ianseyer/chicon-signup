@@ -25,7 +25,7 @@ router.post('/charge', function(req, res){
   if(req.body.type == "drop"){
     stripe.customers.create({
       description: "Chicon Collective Drop In",
-      email: req.body.token.email,
+      email: req.body.email,
       source: req.body.token.id
     })
     .then(function(customer){
@@ -45,7 +45,7 @@ router.post('/charge', function(req, res){
   else {
     stripe.customers.create({
       description: "Chicon Collective",
-      email: req.body.token.email,
+      email: req.body.email,
       source: req.body.token.id,
       plan: req.body.type
     })

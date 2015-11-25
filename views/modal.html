@@ -1,0 +1,73 @@
+<div class="modal fade" id="payModal" data-keyboard=false>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">&times;</a>
+        <h4 class="modal-title">Payment</h4>
+      </div>
+      <div class="modal-body">
+        <h2 class="text-info">Please enter your email, then swipe your card.</h1>
+        <h3 class="text-info">You may have to type in your CVC.</h2>
+        <form action="/charge" method="post">
+            <label>Email: <input type="text" name="email" id="email"/></label><br>
+    				<label>First name: <input required type="text" name="firstName" id="firstName" /></label><br>
+    				<label>Last name: <input type="text" name="lastName" id="lastName" /></label><br>
+    				<label>Card number: <input type="text" name="account" id="account" data-stripe="number"/></label><br>
+
+    					Expiration date:
+    					<label>Month: <input type="text" name="expMonth" id="expMonth" data-stripe="exp-month" size="2" /></label>
+    					<label>Year: <input type="text" name="expYear" id="expYear" data-stripe="exp-year" size="4" /></label>
+    				<br>
+            <label>CVC: <input type="text" name="cvc" data-stripe="cvc" id="cvc"/></label><br>
+            <input hidden id="membertype" type="text" name="type">
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Pay</button>
+        </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+  <script type="text/javascript">
+    // Called by plugin on a successful scan.
+    var complete = function (data) {
+      // Is it a payment card?
+      if (data.type == "generic")
+        return;
+      // Copy data fields to form
+      $("form #firstName").val(data.firstName);
+      $("form #lastName").val(data.lastName);
+      $("form #account").val(data.account);
+      $("form #expMonth").val(data.expMonth);
+      $("form #expYear").val("20"+data.expYear);
+      $("form #type").val(data.type);
+    };
+    // Event handler for success.cardswipe.  Displays returned data in a dialog
+    var success = function (event, data) {
+      $("#cvc").focus()
+    }
+    var failure = function () {
+      console.log('failure')
+    }
+    // Initialize the plugin with default parser and callbacks.
+    //
+    // Set debug to true to watch the characters get captured and the state machine transitions
+    // in the javascript console. This requires a browser that supports the console.log function.
+    //
+    // Set firstLineOnly to true to invoke the parser after scanning the first line. This will speed up the
+    // time from the start of the scan to invoking your success callback.
+    $.cardswipe({
+      firstLineOnly: true,
+      success: complete,
+      parsers: ["visa", "amex", "mastercard", "generic"],
+      debug: false
+    });
+    // Bind event listeners to the document
+    $(document)
+      .on("success.cardswipe", success)
+      .on("failure.cardswipe", failure)
+    ;
+    $('#payModal').on('shown.bs.modal', function () {
+      $('#email').focus()
+    })
+  </script>
+</div><!-- /.modal -->
