@@ -1,8 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var stripe = require('stripe')(process.env.STRIPE_SECRET);
-/* GET home page. */
+var mandrill = require('mandrill-api/mandrill');
+var mandrill_client = new mandrill.Mandrill(process.env.MANDRILL);
 
+
+/* GET home page. */
 router.get('/', function(req, res) {
   res.render('index', { title: 'Express' });
 });
@@ -20,8 +23,18 @@ All plan info should be managed via stripe. Use descriptive plan ids, and place 
 
 If it's a dropin, simply create a new customer and charge them 1000 pennies.
 Otherwise, create a new customer that is subscribed to that plan. Assuming their cc info was correct, this will immediately charge them and begin the subscription.
+
+Regardless, mail them an invoice.
 */
 router.post('/charge', function(req, res){
+  //construct our email
+  var message = {
+    'subject': 'Successful Chicon Signup & Information',
+    'from_email': 'amanda@chicon.co',
+    'from_name': 'Amanda Phillips',
+    'to': [{'email':req.body.email, 'type':'to'}]
+  }
+
   if(req.body.type == "drop"){
     stripe.customers.create({
       description: "Chicon Collective Drop In",
@@ -35,7 +48,12 @@ router.post('/charge', function(req, res){
         customer: customer.id
       })
       .then(function(charge){
-        res.send(200)
+        mandrill_client.messages.sendTemplate({'template_name':'signon-1', 'template_content':[{}], 'message':message, 'async':false, 'ip_pool':'Main Pool'}, function(result){
+          res.send(200)
+        }, function(err){
+          console.log(err)
+          res.send(500)
+        })
       })
     })
     .catch(function(err){
@@ -50,12 +68,18 @@ router.post('/charge', function(req, res){
       plan: req.body.type
     })
     .then(function(customer){
-      res.send(200)
+      mandrill_client.messages.sendTemplate({'template_name':'signon-1', 'template_content':[{}], 'message':message, 'async':false, 'ip_pool':'Main Pool'}, function(result){
+        res.send(200)
+      }, function(err){
+        console.log(err)
+        res.send(500)
+      })
     })
     .catch(function(err){
       console.log(err);
     })
   }
+
 })
 
 module.exports = router;
